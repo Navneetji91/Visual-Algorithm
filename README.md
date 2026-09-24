@@ -40,7 +40,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`. The API runs at `http://localhost:8000` and generates deterministic `DEMO-BTC` / `DEMO-ETH` ticks on first use. Copy `.env.example` to `.env.local` in the frontend to override `NEXT_PUBLIC_API_URL`.
+Open `http://localhost:3000`. The API runs at `http://localhost:8000` and generates deterministic `DEMO-BTC` / `DEMO-ETH` ticks on first use. The frontend proxies browser requests through `/api`, avoiding local CORS issues. For deployment, copy `frontend/.env.example` to `frontend/.env.local` and set `BACKEND_URL` to the backend's reachable URL. Set `NEXT_PUBLIC_API_URL` only when replay WebSockets must connect directly to a public backend.
 
 ## Verification
 
@@ -66,7 +66,7 @@ Signals use only completed candles and are shifted one bar before they can chang
 
 ## Deployment
 
-Deploy `backtestlab/frontend` to Vercel and set `NEXT_PUBLIC_API_URL` to the public backend URL. Deploy `backtestlab/backend` to Render or Railway with the start command `uvicorn app.main:app --host 0.0.0.0 --port $PORT`. Optional AI explanations use `ANTHROPIC_API_KEY` and `ANTHROPIC_MODEL`; without them, the deterministic rule-based explainer is used.
+Deploy `backtestlab/frontend` to Vercel and set `BACKEND_URL` to the public backend URL. Deploy `backtestlab/backend` to Render or Railway with the start command `uvicorn app.main:app --host 0.0.0.0 --port $PORT`. Optional AI explanations use `ANTHROPIC_API_KEY` and `ANTHROPIC_MODEL`; without them, the deterministic rule-based explainer is used.
 
 ## Limitations
 

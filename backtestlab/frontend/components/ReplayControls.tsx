@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import type { ReplayMessage, CandleData, MarkerData, EquityPoint } from "@/lib/types";
-import { API_BASE } from "@/lib/api";
+import { createReplayWebSocket } from "@/lib/api";
 
 interface ReplayControlsProps {
   config: {
@@ -41,8 +41,7 @@ export default function ReplayControls({
   const wsRef = useRef<WebSocket | null>(null);
 
   const connect = useCallback(() => {
-    const wsUrl = API_BASE.replace("http", "ws") + "/replay";
-    const ws = new WebSocket(wsUrl);
+    const ws = createReplayWebSocket();
     wsRef.current = ws;
 
     ws.onopen = () => {

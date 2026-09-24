@@ -106,13 +106,38 @@ export default function PriceChart({
 
       // Markers on the candle series
       if (markers.length > 0) {
-        const formattedMarkers = markers.map((m) => ({
-          time: m.time as any,
-          position: m.position,
-          color: m.color,
-          shape: m.shape,
-          text: m.text,
-        }));
+        const markerMap = new Map<number, any>();
+
+        markers.forEach((m) => {
+          let closestTime = candles[0]?.time || m.time;
+          let minDiff = Infinity;
+          for (const c of candles) {
+            const diff = Math.abs((c.time as number) - (m.time as number));
+            if (diff < minDiff) {
+              minDiff = diff;
+              closestTime = c.time;
+            }
+          }
+
+          const time = closestTime as number;
+
+          if (markerMap.has(time)) {
+            const existing = markerMap.get(time);
+            existing.text += ` | ${m.text}`;
+          } else {
+            markerMap.set(time, {
+              time,
+              position: m.position,
+              color: m.color,
+              shape: m.shape,
+              text: m.text,
+            });
+          }
+        });
+
+        const formattedMarkers = Array.from(markerMap.values()).sort(
+          (a, b) => a.time - b.time
+        );
         lwc.createSeriesMarkers(candleSeries, formattedMarkers);
       }
 
