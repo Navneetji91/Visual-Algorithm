@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+*.log
+*.parquet
+.venv/
+node_modules/
+.next/
+coverage/
